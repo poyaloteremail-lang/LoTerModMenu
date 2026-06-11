@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>LoTer 3D Panel | Sync Keys</title>
+    <title>PoyaLoTer | پنل اختصاصی</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -146,136 +146,139 @@
 <body>
 
 <div class="master-3d" id="appContainer">
-    <!-- انتخاب حالت -->
+    <!-- صفحه انتخاب حالت -->
     <div id="modeSelectPage" class="page-3d">
         <div class="header-3d" style="justify-content: center;">
             <div class="logo-3d">
-                <img src="https://img.icons8.com/fluency/48/000000/crystal-ball.png" width="40" height="40"> LoTer 3D Sync
+                <img src="https://img.icons8.com/fluency/48/000000/crystal-ball.png" width="40" height="40"> PoyaLoTer
             </div>
         </div>
         <div style="padding: 50px 30px; text-align: center;">
             <img src="https://img.icons8.com/fluency/96/000000/neon-heart.png" width="80" height="80">
-            <h1 style="color:#0f172a; margin: 20px 0;">ModMenu + KeyGen</h1>
-            <p style="color:#334155;">کلیدها رو به راحتی با مشتری به اشتراک بذار</p>
+            <h1 style="color:#0f172a; margin: 20px 0;">LoTerPanel</h1>
+            <p style="color:#334155;">سیستمی امن و اختصاصی برای اعضای ویژه</p>
             <div style="display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; margin-top: 45px;">
                 <div class="card-3d" data-mode="user" style="width: 270px; cursor: pointer; text-align: center;">
                     <img src="https://img.icons8.com/fluency/96/000000/game-controller.png" width="70" height="70">
-                    <h3>User Mode</h3>
-                    <p>ورود با کلید یا فایل JSON</p>
+                    <h3>ورود کاربران</h3>
+                    <p>فقط با کلید اختصاصی</p>
                 </div>
                 <div class="card-3d" data-mode="admin" style="width: 270px; cursor: pointer; text-align: center;">
                     <img src="https://img.icons8.com/fluency/96/000000/admin-settings-male.png" width="70" height="70">
-                    <h3>Admin Panel</h3>
-                    <p>ساخت کلید و خروجی JSON برای مشتری</p>
+                    <h3>پنل مدیریت</h3>
+                    <p>ساخت و مدیریت کلیدها</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ================= صفحه کاربر با قابلیت Import ================= -->
+    <!-- ================= صفحه کاربر (فقط ورود با کلید - بدون نمایش کلید) ================= -->
     <div id="userPage" style="display: none;">
         <div class="header-3d">
-            <div class="logo-3d"><img src="https://img.icons8.com/fluency/48/000000/user.png" width="32"> User Dashboard</div>
-            <button class="btn-3d-home" id="userHomeBtn"><img src="https://img.icons8.com/material-outlined/24/000000/home.png" width="20"> Home</button>
+            <div class="logo-3d"><img src="https://img.icons8.com/fluency/48/000000/user.png" width="32"> LoTerModMenu</div>
+            <button class="btn-3d-home" id="userHomeBtn"><img src="https://img.icons8.com/material-outlined/24/000000/home.png" width="20"> خانه</button>
         </div>
         <div style="padding: 28px;">
             <div id="userLoginArea">
-                <div class="card-3d" style="max-width: 600px; margin: 0 auto;">
+                <div class="card-3d" style="max-width: 550px; margin: 0 auto;">
                     <div style="text-align:center"><img src="https://img.icons8.com/fluency/96/000000/lock--v1.png" width="70"></div>
-                    <h3>ورود با کلید یا فایل دریافتی از ادمین</h3>
-                    <input type="text" id="userKeyInput" placeholder="متن کلید (مثلا LoTerTest)" style="width:100%; padding: 15px; margin: 15px 0; border-radius: 80px; border: 2px solid #cbd5e1;">
-                    <button id="userLoginBtn" class="btn-3d" style="width:100%; justify-content: center;"><img src="https://img.icons8.com/material-outlined/24/ffffff/unlock.png" width="22"> ورود با کلید</button>
-                    <div style="margin: 20px 0; text-align: center; border-top: 2px dashed #cbd5e1; padding-top: 20px;">
-                        <p style="color:#1e3c72;">📁 روش دیگر: فایل JSON کلیدها را از ادمین بگیرید</p>
-                        <label class="btn-outline-3d btn-3d" style="cursor:pointer; display:inline-flex; margin-top:10px;">
-                            <img src="https://img.icons8.com/material-outlined/24/1e3c72/upload.png" width="20"> Import Keys File
-                            <input type="file" id="userImportFile" accept=".json" style="display:none;" onchange="importUserKeys(this.files[0])">
-                        </label>
+                    <h3 style="text-align:center;">ورود با کلید اختصاصی</h3>
+                    <input type="text" id="userKeyInput" placeholder="لطفاً کلید دریافتی را وارد کنید" style="width:100%; padding: 15px; margin: 25px 0; border-radius: 80px; border: 2px solid #cbd5e1; text-align:center;">
+                    <button id="userLoginBtn" class="btn-3d" style="width:100%; justify-content: center;"><img src="https://img.icons8.com/material-outlined/24/ffffff/unlock.png" width="22"> تأیید و ورود</button>
+                    <div style="margin-top: 20px; text-align:center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                        <img src="https://img.icons8.com/ios-glyphs/30/000000/fingerprint.png" width="18"> شناسه دستگاه شما: <strong id="displayDeviceId">--</strong>
                     </div>
-                    <div id="userLoginError" style="color:#dc2626; margin-top: 16px;"></div>
-                    <div style="margin-top: 20px;"><img src="https://img.icons8.com/ios-glyphs/30/000000/fingerprint.png" width="18"> Your Device ID: <strong id="displayDeviceId">--</strong></div>
+                    <div id="userLoginError" style="color:#dc2626; margin-top: 20px; text-align:center;"></div>
+                </div>
+                <!-- بخش Import مخفی نیست اما فقط برای مواقعی که ادمین فایل بده -->
+                <div class="card-3d" style="max-width: 550px; margin: 20px auto 0; text-align:center;">
+                    <p style="color:#475569;">اگر فایل کلید از ادمین دریافت کرده‌اید، آن را وارد کنید</p>
+                    <label class="btn-outline-3d btn-3d" style="cursor:pointer; display:inline-flex; margin-top:10px;">
+                        <img src="https://img.icons8.com/material-outlined/24/1e3c72/upload.png" width="20"> بارگذاری فایل کلید
+                        <input type="file" id="userImportFile" accept=".json" style="display:none;" onchange="importUserKeys(this.files[0])">
+                    </label>
                 </div>
             </div>
             <div id="userMenuArea" style="display: none;">
                 <div class="card-3d">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span><img src="https://img.icons8.com/fluency/32/000000/gamepad.png" width="28"> Game Mode</span>
+                        <span><img src="https://img.icons8.com/fluency/32/000000/gamepad.png" width="28"> حالت بازی</span>
                         <label class="switch-3d"><input type="checkbox" id="gameModeUser"><span class="slider-3d"></span></label>
                     </div>
-                    <button id="openUserMenuBtn" class="btn-3d" style="width:100%; margin: 15px 0;"><img src="https://img.icons8.com/material-outlined/24/ffffff/menu--v1.png" width="20"> Open Features</button>
-                    <button id="userInfoBtn" class="btn-outline-3d btn-3d" style="width:100%; margin-bottom: 12px;"><img src="https://img.icons8.com/material-outlined/24/1e3c72/info.png" width="20"> Account Info</button>
-                    <button id="userLogoutBtn" class="btn-outline-3d btn-3d" style="width:100%;">🚪 Logout</button>
+                    <button id="openUserMenuBtn" class="btn-3d" style="width:100%; margin: 15px 0;"><img src="https://img.icons8.com/material-outlined/24/ffffff/menu--v1.png" width="20"> باز کردن منو</button>
+                    <button id="userInfoBtn" class="btn-outline-3d btn-3d" style="width:100%; margin-bottom: 12px;"><img src="https://img.icons8.com/material-outlined/24/1e3c72/info.png" width="20"> اطلاعات حساب</button>
+                    <button id="userLogoutBtn" class="btn-outline-3d btn-3d" style="width:100%;">خروج</button>
                 </div>
                 <div id="userCategoryMenu" style="display: none; margin: 20px 0;">
                     <div style="display: flex; gap: 15px; justify-content: center; flex-wrap:wrap;">
-                        <div class="card-3d" data-cat="memori" style="cursor: pointer; padding: 10px 24px;"><img src="https://img.icons8.com/fluency/32/000000/memory.png" width="24"> Memori</div>
-                        <div class="card-3d" data-cat="main" style="cursor: pointer; padding: 10px 24px;"><img src="https://img.icons8.com/fluency/32/000000/aim.png" width="24"> Main CONF</div>
-                        <div class="card-3d" data-cat="fps" style="cursor: pointer; padding: 10px 24px;"><img src="https://img.icons8.com/fluency/32/000000/lightning-bolt.png" width="24"> FPS / Lag</div>
+                        <div class="card-3d" data-cat="memori" style="cursor: pointer; padding: 10px 24px;"><img src="https://img.icons8.com/fluency/32/000000/memory.png" width="24"> حافظه</div>
+                        <div class="card-3d" data-cat="main" style="cursor: pointer; padding: 10px 24px;"><img src="https://img.icons8.com/fluency/32/000000/aim.png" width="24"> هدفگیری</div>
+                        <div class="card-3d" data-cat="fps" style="cursor: pointer; padding: 10px 24px;"><img src="https://img.icons8.com/fluency/32/000000/lightning-bolt.png" width="24"> بهبود عملکرد</div>
                     </div>
                 </div>
                 <div id="userFeaturesContainer"></div>
                 <div id="userInfoPanel" style="display: none;" class="card-3d">
-                    <div><img src="https://img.icons8.com/fluency/48/000000/device.png" width="28"> <strong>Device ID:</strong> <span id="infoDeviceId"></span></div>
-                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/key.png" width="18"> <strong>Key:</strong> <span id="infoKeyName"></span></div>
-                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/expired.png" width="18"> <strong>Expires:</strong> <span id="infoExpiryTimer"></span></div>
-                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/devices.png" width="18"> <strong>Max devices:</strong> <span id="infoMaxDevices"></span></div>
-                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/registered-trademark.png" width="18"> <strong>Registered devices count:</strong> <span id="infoRegCount"></span></div>
-                    <button id="closeUserInfo" class="btn-outline-3d btn-3d" style="margin-top: 20px;">Back</button>
+                    <div><img src="https://img.icons8.com/fluency/48/000000/device.png" width="28"> <strong>شناسه دستگاه:</strong> <span id="infoDeviceId"></span></div>
+                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/key.png" width="18"> <strong>کلید فعال:</strong> <span id="infoKeyName"></span></div>
+                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/expired.png" width="18"> <strong>زمان باقی‌مانده:</strong> <span id="infoExpiryTimer"></span></div>
+                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/devices.png" width="18"> <strong>حداکثر دستگاه مجاز:</strong> <span id="infoMaxDevices"></span></div>
+                    <div><img src="https://img.icons8.com/ios-glyphs/30/000000/registered-trademark.png" width="18"> <strong>تعداد دستگاه‌های ثبت شده:</strong> <span id="infoRegCount"></span></div>
+                    <button id="closeUserInfo" class="btn-outline-3d btn-3d" style="margin-top: 20px;">بازگشت</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ================= صفحه ادمین (با دکمه Export تک کلید) ================= -->
+    <!-- ================= صفحه ادمین (مدیریت کلیدها - با دکمه خروجی JSON) ================= -->
     <div id="adminPage" style="display: none;">
         <div class="header-3d">
-            <div class="logo-3d"><img src="https://img.icons8.com/fluency/48/000000/administrator.png" width="32"> Admin KeyGen</div>
-            <button class="btn-3d-home" id="adminHomeBtn"><img src="https://img.icons8.com/material-outlined/24/000000/home.png" width="20"> Home</button>
+            <div class="logo-3d"><img src="https://img.icons8.com/fluency/48/000000/administrator.png" width="32"> مدیریت LoTerPanel</div>
+            <button class="btn-3d-home" id="adminHomeBtn"><img src="https://img.icons8.com/material-outlined/24/000000/home.png" width="20"> خانه</button>
         </div>
         <div style="padding: 28px;">
             <div id="adminLoginArea">
                 <div class="card-3d" style="max-width: 500px; margin: 0 auto;">
                     <div style="text-align:center"><img src="https://img.icons8.com/fluency/96/000000/key-security.png" width="70"></div>
-                    <h3>Admin Master Key</h3>
-                    <input type="password" id="adminMasterInput" placeholder="Master key" style="width:100%; padding: 14px; margin: 20px 0; border-radius: 60px; border:2px solid #cbd5e1;">
-                    <button id="adminLoginBtn" class="btn-3d" style="width:100%;"><img src="https://img.icons8.com/material-outlined/24/ffffff/shield.png" width="20"> Enter Admin</button>
+                    <h3>ورود به پنل مدیریت</h3>
+                    <input type="password" id="adminMasterInput" placeholder="کلید مدیریت" style="width:100%; padding: 14px; margin: 20px 0; border-radius: 60px; border:2px solid #cbd5e1;">
+                    <button id="adminLoginBtn" class="btn-3d" style="width:100%;"><img src="https://img.icons8.com/material-outlined/24/ffffff/shield.png" width="20"> ورود</button>
                     <div id="adminLoginError" style="color:#dc2626; margin-top:16px;"></div>
                 </div>
             </div>
             <div id="adminDashboardArea" style="display: none;">
                 <div class="tabs-3d">
-                    <button class="tab-3d active" data-tab="dashboard"><img src="https://img.icons8.com/ios-glyphs/30/000000/dashboard.png" width="20"> Dashboard</button>
-                    <button class="tab-3d" data-tab="generate"><img src="https://img.icons8.com/ios-glyphs/30/000000/plus--v1.png" width="20"> Generate</button>
-                    <button class="tab-3d" data-tab="manage"><img src="https://img.icons8.com/ios-glyphs/30/000000/list--v1.png" width="20"> Manage Keys</button>
-                    <button class="tab-3d" data-tab="settings"><img src="https://img.icons8.com/ios-glyphs/30/000000/settings--v1.png" width="20"> Settings</button>
+                    <button class="tab-3d active" data-tab="dashboard"><img src="https://img.icons8.com/ios-glyphs/30/000000/dashboard.png" width="20"> داشبورد</button>
+                    <button class="tab-3d" data-tab="generate"><img src="https://img.icons8.com/ios-glyphs/30/000000/plus--v1.png" width="20"> ساخت کلید</button>
+                    <button class="tab-3d" data-tab="manage"><img src="https://img.icons8.com/ios-glyphs/30/000000/list--v1.png" width="20"> مدیریت کلیدها</button>
+                    <button class="tab-3d" data-tab="settings"><img src="https://img.icons8.com/ios-glyphs/30/000000/settings--v1.png" width="20"> تنظیمات</button>
                 </div>
                 <div id="dashboardTab" style="display: block; padding: 28px 0;">
                     <div class="stats-3d" id="adminStats"></div>
-                    <div class="card-3d"><h4><img src="https://img.icons8.com/fluency/32/000000/activity-history.png" width="28"> Recent Keys</h4><div id="recentKeysList"></div></div>
+                    <div class="card-3d"><h4><img src="https://img.icons8.com/fluency/32/000000/activity-history.png" width="28"> آخرین فعالیت‌ها</h4><div id="recentKeysList"></div></div>
                 </div>
                 <div id="generateTab" style="display: none; padding: 28px 0;">
                     <div class="card-3d">
-                        <h4><img src="https://img.icons8.com/fluency/32/000000/create.png" width="28"> Create New Key</h4>
-                        <input type="text" id="newKeyCustom" placeholder="Custom key (optional)" style="width:100%; margin:10px 0; padding:12px; border-radius:60px; border:1px solid #cbd5e1;">
-                        <select id="expiryType" style="width:100%; padding:12px; margin:10px 0; border-radius:60px;"><option value="hours">Hours</option><option value="days" selected>Days</option><option value="months">Months</option></select>
+                        <h4><img src="https://img.icons8.com/fluency/32/000000/create.png" width="28"> ساخت کلید جدید</h4>
+                        <input type="text" id="newKeyCustom" placeholder="کلید دلخواه (اختیاری)" style="width:100%; margin:10px 0; padding:12px; border-radius:60px; border:1px solid #cbd5e1;">
+                        <select id="expiryType" style="width:100%; padding:12px; margin:10px 0; border-radius:60px;"><option value="hours">ساعت</option><option value="days" selected>روز</option><option value="months">ماه</option></select>
                         <input type="number" id="expiryValue" value="30" style="width:100%; padding:12px; margin:10px 0; border-radius:60px;">
                         <input type="number" id="maxDevicesKey" value="1" min="1" max="10" style="width:100%; padding:12px; margin:10px 0; border-radius:60px;">
-                        <button id="generateKeyFinal" class="btn-3d"><img src="https://img.icons8.com/material-outlined/24/ffffff/plus.png" width="20"> Generate</button>
+                        <button id="generateKeyFinal" class="btn-3d"><img src="https://img.icons8.com/material-outlined/24/ffffff/plus.png" width="20"> ساخت کلید</button>
                         <div id="genResultMsg" style="margin-top: 20px;"></div>
                     </div>
                 </div>
                 <div id="manageTab" style="display: none; padding: 28px 0;">
                     <div class="card-3d">
-                        <input type="text" id="searchKeyAdmin" placeholder="Search key..." style="width:100%; padding:12px; margin-bottom:15px; border-radius:60px;">
-                        <select id="filterStatusAdmin" style="width:100%; padding:12px; margin-bottom:15px; border-radius:60px;"><option value="all">All</option><option value="active">Active</option><option value="expired">Expired</option></select>
-                        <button id="refreshManage" class="btn-3d"><img src="https://img.icons8.com/material-outlined/24/ffffff/refresh.png" width="20"> Refresh</button>
+                        <input type="text" id="searchKeyAdmin" placeholder="جستجوی کلید..." style="width:100%; padding:12px; margin-bottom:15px; border-radius:60px;">
+                        <select id="filterStatusAdmin" style="width:100%; padding:12px; margin-bottom:15px; border-radius:60px;"><option value="all">همه</option><option value="active">فعال</option><option value="expired">منقضی</option></select>
+                        <button id="refreshManage" class="btn-3d"><img src="https://img.icons8.com/material-outlined/24/ffffff/refresh.png" width="20"> بروزرسانی</button>
                         <div id="keysTableContainer" style="margin-top: 25px; overflow-x:auto;"></div>
                     </div>
                 </div>
                 <div id="settingsTab" style="display: none; padding: 28px 0;">
                     <div class="card-3d">
-                        <button id="exportAllKeysBtn" class="btn-3d" style="width:100%; margin-bottom:15px;"><img src="https://img.icons8.com/material-outlined/24/ffffff/download.png" width="20"> Export All Keys (JSON)</button>
-                        <button id="resetAllKeysBtn" style="width:100%; background:#dc2626; border:none; padding:14px; border-radius:60px; color:white; cursor:pointer;">⚠️ Reset All Keys</button>
+                        <button id="exportAllKeysBtn" class="btn-3d" style="width:100%; margin-bottom:15px;"><img src="https://img.icons8.com/material-outlined/24/ffffff/download.png" width="20"> خروجی گرفتن از همه کلیدها (JSON)</button>
+                        <button id="resetAllKeysBtn" style="width:100%; background:#dc2626; border:none; padding:14px; border-radius:60px; color:white; cursor:pointer;">حذف همه کلیدها</button>
                     </div>
                 </div>
             </div>
@@ -284,19 +287,20 @@
 </div>
 
 <script>
-    // -------------------- DATABASE & DEVICE ID --------------------
+    // -------------------- پایگاه داده کلیدها --------------------
     let keysDatabase = [];
-    const ADMIN_MASTER = "LoTerKeypoya79";
+    const ADMIN_MASTER = "PoyaLoTer79";  // کلید مدیریت (فقط ادمین بداند)
     let currentUserKeyObj = null;
     let gameModeUser = false;
     let timerInterval = null;
 
+    // تولید شناسه یکتا برای هر دستگاه
     function generateDeviceId() {
         let nav = navigator.userAgent;
         let lang = navigator.language;
         let screenRes = `${screen.width}x${screen.height}x${screen.colorDepth}`;
         let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        let seed = `${nav}|${lang}|${screenRes}|${timezone}|LoTer3D`;
+        let seed = `${nav}|${lang}|${screenRes}|${timezone}|PoyaLoTer`;
         let hash = 0;
         for (let i = 0; i < seed.length; i++) {
             hash = ((hash << 5) - hash) + seed.charCodeAt(i);
@@ -308,18 +312,18 @@
     document.getElementById("displayDeviceId") && (document.getElementById("displayDeviceId").innerText = MY_DEVICE_ID);
 
     function loadKeys() {
-        let stored = localStorage.getItem("LoTer_3DKeys");
+        let stored = localStorage.getItem("PoyaLoTer_DB");
         if(stored) keysDatabase = JSON.parse(stored);
         else {
+            // کلید نمونه (فقط برای تست، حتماً در پنل ادمین پاک کنید)
             keysDatabase = [
-                { key: "LoTerTest", expiryTimestamp: Date.now() + 30*86400000, maxDevices: 2, registeredDevices: [] },
-                { key: "DEMO2025", expiryTimestamp: Date.now() + 7*86400000, maxDevices: 1, registeredDevices: [] }
+                { key: "LoTerTest", expiryTimestamp: Date.now() + 30*86400000, maxDevices: 2, registeredDevices: [] }
             ];
             saveKeys();
         }
     }
     function saveKeys() {
-        localStorage.setItem("LoTer_3DKeys", JSON.stringify(keysDatabase));
+        localStorage.setItem("PoyaLoTer_DB", JSON.stringify(keysDatabase));
         if(document.getElementById("adminDashboardArea") && document.getElementById("adminDashboardArea").style.display === "block") updateAdminStatsAndTables();
     }
 
@@ -341,14 +345,12 @@
         return true;
     }
 
-    // اضافه کردن کلید جدید به دیتابیس (برای import)
+    // اضافه کردن کلید جدید از فایل JSON (برای کاربر)
     function addKeyToDatabase(keyObj) {
         let existing = keysDatabase.find(k => k.key === keyObj.key);
         if(existing) {
-            // بروزرسانی اطلاعات (فقط در صورت جدیدتر بودن expiry)
             if(existing.expiryTimestamp < keyObj.expiryTimestamp) existing.expiryTimestamp = keyObj.expiryTimestamp;
             if(existing.maxDevices !== keyObj.maxDevices) existing.maxDevices = keyObj.maxDevices;
-            // دستگاه‌های جدید را اضافه کن (بدون تکرار)
             for(let dev of keyObj.registeredDevices) {
                 if(!existing.registeredDevices.some(d=>d.deviceId===dev.deviceId)) {
                     existing.registeredDevices.push(dev);
@@ -360,7 +362,6 @@
         saveKeys();
     }
 
-    // Import فایل JSON توسط کاربر
     window.importUserKeys = function(file) {
         if(!file) return;
         let reader = new FileReader();
@@ -369,7 +370,7 @@
                 let imported = JSON.parse(e.target.result);
                 if(Array.isArray(imported)) {
                     imported.forEach(keyObj => addKeyToDatabase(keyObj));
-                    showToast("✅ کلیدها با موفقیت اضافه شدند. اکنون می‌توانید وارد شوید.");
+                    showToast("✅ فایل با موفقیت بارگذاری شد. اکنون می‌توانید وارد شوید.");
                     document.getElementById("userLoginError").innerText = "";
                 } else {
                     showToast("فرمت فایل نامعتبر است", true);
@@ -383,11 +384,11 @@
     function attemptUserLogin(keyStr) {
         let keyObj = keysDatabase.find(k => k.key === keyStr);
         if(!keyObj) {
-            document.getElementById("userLoginError").innerHTML = "❌ کلید یافت نشد. لطفاً فایل JSON کلید را از ادمین دریافت و import کنید.";
+            document.getElementById("userLoginError").innerHTML = "❌ کلید یافت نشد. لطفاً از ادمین فایل کلید را دریافت کنید.";
             return false;
         }
         if(keyObj.expiryTimestamp <= Date.now()) {
-            document.getElementById("userLoginError").innerText = "❌ کلید منقضی شده است.";
+            document.getElementById("userLoginError").innerText = "❌ این کلید منقضی شده است.";
             return false;
         }
         if(!registerDeviceToKey(keyObj)) {
@@ -397,7 +398,7 @@
         currentUserKeyObj = keyObj;
         document.getElementById("userLoginArea").style.display = "none";
         document.getElementById("userMenuArea").style.display = "block";
-        showToast("✅ دسترسی granted! دستگاه ثبت شد.");
+        showToast("✅ دسترسی granted. دستگاه ثبت شد.");
         startUserTimer();
         return true;
     }
@@ -415,7 +416,7 @@
         let hours = Math.floor((remaining%86400000)/3600000);
         let mins = Math.floor((remaining%3600000)/60000);
         let secs = Math.floor((remaining%60000)/1000);
-        let timerStr = remaining>0 ? `${days}d ${hours.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}` : "EXPIRED";
+        let timerStr = remaining>0 ? `${days} روز ${hours.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}` : "منقضی شده";
         document.getElementById("infoExpiryTimer").innerHTML = timerStr;
         document.getElementById("infoMaxDevices").innerText = currentUserKeyObj.maxDevices;
         document.getElementById("infoRegCount").innerText = currentUserKeyObj.registeredDevices.length;
@@ -424,9 +425,9 @@
     }
     function buildUserFeatures() {
         const categories = {
-            memori: ["No Recoil","Boost SMG","Boost Assault","Boost LMG","Boost Sniper","Boost ShotGun"],
-            main: ["AimBot","AimAssist","AimLock","autohead","headshot V2","sniper head","shotgun aim bot"],
-            fps: ["unlock fps","fix lag","fix crash"]
+            memori: ["بدون لگ", "افزایش رم", "بهینه‌سازی حافظه", "پاک‌کن کش"],
+            main: ["هدف خودکار", "کمک نشانه‌روی", "قفل روی هدف", "شات هد خودکار"],
+            fps: ["رفع افت فریم", "تثبیت نرخ فریم", "رفع کرش"]
         };
         let container = document.getElementById("userFeaturesContainer");
         container.innerHTML = "";
@@ -449,11 +450,11 @@
         }
         document.querySelectorAll(".user-feat-switch").forEach(sw => {
             sw.addEventListener("change", (e) => {
-                if(!gameModeUser && e.target.checked) { showToast("Game Mode را روشن کنید", true); e.target.checked=false; return; }
-                showToast(e.target.checked ? `✅ ${e.target.dataset.feat} ON` : `🔴 ${e.target.dataset.feat} OFF`);
+                if(!gameModeUser && e.target.checked) { showToast("لطفاً حالت بازی را روشن کنید", true); e.target.checked=false; return; }
+                showToast(e.target.checked ? `✅ ${e.target.dataset.feat} فعال شد` : `🔴 ${e.target.dataset.feat} غیرفعال شد`);
             });
         });
-        document.getElementById("gameModeUser").onchange = (e) => { gameModeUser = e.target.checked; showToast(gameModeUser?"Game Mode ON":"Game Mode OFF"); };
+        document.getElementById("gameModeUser").onchange = (e) => { gameModeUser = e.target.checked; showToast(gameModeUser?"حالت بازی روشن":"حالت بازی خاموش"); };
         document.getElementById("openUserMenuBtn").onclick = () => document.getElementById("userCategoryMenu").style.display = "block";
         document.querySelectorAll("[data-cat]").forEach(el => {
             el.onclick = () => {
@@ -473,16 +474,16 @@
         document.getElementById("userLoginError").innerHTML = "";
     }
 
-    // -------------------- ADMIN --------------------
+    // -------------------- بخش مدیریت (ادمین) --------------------
     function adminLogin(pass) {
         if(pass === ADMIN_MASTER) {
             document.getElementById("adminLoginArea").style.display = "none";
             document.getElementById("adminDashboardArea").style.display = "block";
             loadKeys();
             updateAdminStatsAndTables();
-            showToast("Admin access granted");
+            showToast("ورود به پنل مدیریت");
         } else {
-            document.getElementById("adminLoginError").innerText = "Wrong master key!";
+            document.getElementById("adminLoginError").innerText = "کلید مدیریت اشتباه است";
         }
     }
     function updateAdminStatsAndTables() {
@@ -492,13 +493,13 @@
         let expired = total - active;
         let totalDevices = keysDatabase.reduce((a,k)=>a+k.registeredDevices.length,0);
         document.getElementById("adminStats").innerHTML = `
-            <div class="stat-3d"><div class="stat-number">${total}</div><div>Total Keys</div></div>
-            <div class="stat-3d"><div class="stat-number">${active}</div><div>Active</div></div>
-            <div class="stat-3d"><div class="stat-number">${expired}</div><div>Expired</div></div>
-            <div class="stat-3d"><div class="stat-number">${totalDevices}</div><div>Devices</div></div>
+            <div class="stat-3d"><div class="stat-number">${total}</div><div>کل کلیدها</div></div>
+            <div class="stat-3d"><div class="stat-number">${active}</div><div>فعال</div></div>
+            <div class="stat-3d"><div class="stat-number">${expired}</div><div>منقضی</div></div>
+            <div class="stat-3d"><div class="stat-number">${totalDevices}</div><div>دستگاه‌های ثبت شده</div></div>
         `;
         let recent = [...keysDatabase].sort((a,b)=>b.expiryTimestamp - a.expiryTimestamp).slice(0,5);
-        document.getElementById("recentKeysList").innerHTML = recent.map(k=>`<div style="border-bottom:1px solid #e9ecef; padding:10px;"><strong>${k.key}</strong> - expires: ${new Date(k.expiryTimestamp).toLocaleString()} - devices: ${k.registeredDevices.length}/${k.maxDevices}</div>`).join('');
+        document.getElementById("recentKeysList").innerHTML = recent.map(k=>`<div style="border-bottom:1px solid #e9ecef; padding:10px;"><strong>${k.key}</strong> - انقضا: ${new Date(k.expiryTimestamp).toLocaleString()} - دستگاه‌ها: ${k.registeredDevices.length}/${k.maxDevices}</div>`).join('');
         renderAdminTable();
     }
     function renderAdminTable() {
@@ -511,19 +512,19 @@
             if(filter === "expired" && activeNow) return false;
             return true;
         });
-        let html = `<table class="table-3d"><thead><tr><th>Key</th><th>Expiry</th><th>MaxDev</th><th>Registered Devices</th><th>Actions</th></tr></thead><tbody>`;
+        let html = `<table class="table-3d"><thead><tr><th>کلید</th><th>تاریخ انقضا</th><th>حداکثر دستگاه</th><th>دستگاه‌های ثبت شده</th><th>عملیات</th></tr></thead><tbody>`;
         filtered.forEach(k => {
             let deviceListHtml = k.registeredDevices.map(d => `<div class="device-chip">${d.deviceId}<br><span class="device-time">${new Date(d.registeredAt).toLocaleString()}</span></div>`).join('');
-            if(!deviceListHtml) deviceListHtml = "<span style='color:#aaa;'>No devices</span>";
+            if(!deviceListHtml) deviceListHtml = "<span style='color:#aaa;'>هنوز دستگاهی ثبت نشده</span>";
             html += `<tr>
                         <td><strong>${k.key}</strong></td>
                         <td>${new Date(k.expiryTimestamp).toLocaleString()}</td>
                         <td><input type="number" id="max_${k.key}" value="${k.maxDevices}" min="1" max="10" style="width:70px;"></td>
                         <td>${deviceListHtml}</td>
                         <td>
-                            <button onclick="updateMaxDevices('${k.key}')" class="btn-3d" style="padding:6px 12px;">💾</button>
-                            <button onclick="downloadSingleKey('${k.key}')" class="btn-outline-3d btn-3d" style="padding:6px 12px;">📥 JSON</button>
-                            <button onclick="deleteKeyAdmin('${k.key}')" style="background:#dc2626; border:none; padding:6px 12px; border-radius:40px; color:white;">🗑️</button>
+                            <button onclick="updateMaxDevices('${k.key}')" class="btn-3d" style="padding:6px 12px;">💾 ذخیره</button>
+                            <button onclick="downloadSingleKey('${k.key}')" class="btn-outline-3d btn-3d" style="padding:6px 12px;">📥 خروجی JSON</button>
+                            <button onclick="deleteKeyAdmin('${k.key}')" style="background:#dc2626; border:none; padding:6px 12px; border-radius:40px; color:white;">🗑️ حذف</button>
                         </td>
                      </tr>`;
         });
@@ -533,10 +534,10 @@
     window.updateMaxDevices = (key) => {
         let newMax = parseInt(document.getElementById(`max_${key}`).value);
         let idx = keysDatabase.findIndex(k=>k.key===key);
-        if(idx!==-1) { keysDatabase[idx].maxDevices = newMax; saveKeys(); showToast(`Max devices updated to ${newMax}`); }
+        if(idx!==-1) { keysDatabase[idx].maxDevices = newMax; saveKeys(); showToast(`حداکثر دستگاه به ${newMax} تغییر یافت`); }
     };
     window.deleteKeyAdmin = (key) => {
-        if(confirm(`Delete key "${key}" permanently?`)) { keysDatabase = keysDatabase.filter(k=>k.key!==key); saveKeys(); }
+        if(confirm(`آیا کلید "${key}" برای همیشه حذف شود؟`)) { keysDatabase = keysDatabase.filter(k=>k.key!==key); saveKeys(); }
     };
     window.downloadSingleKey = (key) => {
         let keyObj = keysDatabase.find(k=>k.key===key);
@@ -547,20 +548,20 @@
             a.href = URL.createObjectURL(blob);
             a.download = `key_${key}.json`;
             a.click();
-            showToast("فایل JSON کلید دانلود شد. به مشتری بدهید تا import کند.");
+            showToast("فایل JSON کلید ساخته شد. برای مشتری ارسال کنید.");
         }
     };
     function generateNewKey(custom, expiryVal, type, maxDev) {
         let finalKey = custom.trim() || ("LoTer"+Math.random().toString(36).substring(2,10).toUpperCase());
-        if(keysDatabase.find(k=>k.key===finalKey)) { showToast("Key already exists!", true); return false; }
+        if(keysDatabase.find(k=>k.key===finalKey)) { showToast("این کلید قبلاً وجود دارد", true); return false; }
         let add = 0;
         if(type==="hours") add = expiryVal * 3600000;
         else if(type==="days") add = expiryVal * 86400000;
         else add = expiryVal * 30 * 86400000;
         keysDatabase.push({ key: finalKey, expiryTimestamp: Date.now()+add, maxDevices: Math.min(10,maxDev), registeredDevices: [] });
         saveKeys();
-        document.getElementById("genResultMsg").innerHTML = `✅ Key <strong>${finalKey}</strong> created with ${expiryVal} ${type} expiry, max devices: ${maxDev}<br><button onclick="downloadSingleKey('${finalKey}')" class="btn-outline-3d btn-3d" style="margin-top:12px;">📥 دانلود فایل این کلید برای مشتری</button>`;
-        showToast(`Key ${finalKey} created`);
+        document.getElementById("genResultMsg").innerHTML = `✅ کلید <strong>${finalKey}</strong> با ${expiryVal} ${type==="hours"?"ساعت":(type==="days"?"روز":"ماه")} اعتبار و حداکثر ${maxDev} دستگاه ساخته شد.<br><button onclick="downloadSingleKey('${finalKey}')" class="btn-outline-3d btn-3d" style="margin-top:12px;">📥 دریافت فایل این کلید</button>`;
+        showToast(`کلید ${finalKey} ساخته شد`);
         return true;
     }
     function exportAllKeys() {
@@ -571,7 +572,7 @@
         a.download = `all_keys_backup.json`;
         a.click();
     }
-    function resetAllKeys() { if(confirm("DELETE ALL KEYS?")) { keysDatabase = []; saveKeys(); showToast("All keys reset"); } }
+    function resetAllKeys() { if(confirm("همه کلیدها برای همیشه حذف شوند؟")) { keysDatabase = []; saveKeys(); showToast("همه کلیدها حذف شدند"); } }
     function showToast(msg, isErr=false) {
         let toast = document.createElement("div");
         toast.innerText = msg;
@@ -608,7 +609,7 @@
         document.getElementById("adminPage").style.display = "none";
         if(timerInterval) clearInterval(timerInterval);
     }
-    // Events
+    // رویدادها
     document.querySelectorAll("[data-mode]").forEach(el => el.onclick = () => showMode(el.getAttribute("data-mode")));
     document.getElementById("userHomeBtn").onclick = goHome;
     document.getElementById("adminHomeBtn").onclick = goHome;
