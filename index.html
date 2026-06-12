@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PoyaLoTer | پنل اختصاصی</title>
+    <title>PoyaLoTer | پنل حرفه‌ای</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -132,14 +132,17 @@
             flex: 1; min-width: 140px; text-align: center; border: 1px solid #e2e8f0;
         }
         .stat-number { font-size: 44px; font-weight: 800; background: linear-gradient(135deg, #1e3c72, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .device-chip { background: #eef2ff; padding: 6px 12px; border-radius: 40px; font-size: 11px; font-family: monospace; display: inline-block; margin: 4px; border-right: 3px solid #3b82f6; }
-        .device-time { font-size: 10px; color: #475569; }
+        .device-chip {
+            background: #eef2ff; padding: 8px 12px; border-radius: 40px; font-size: 11px;
+            font-family: monospace; display: inline-block; margin: 4px; border-right: 3px solid #3b82f6;
+            text-align: center;
+        }
+        .device-time { font-size: 10px; color: #475569; display: block; margin-top: 4px; }
         @keyframes floatUp {
             0% { opacity: 0; transform: translateY(40px) rotateX(-15deg); }
             100% { opacity: 1; transform: translateY(0) rotateX(0); }
         }
         .page-3d { animation: floatUp 0.5s ease-out; }
-        .img-icon { width: 28px; height: 28px; vertical-align: middle; }
         @media (max-width: 700px) { .header-3d { flex-direction: column; gap: 12px; } .stats-3d { flex-direction: column; } }
     </style>
 </head>
@@ -172,7 +175,7 @@
         </div>
     </div>
 
-    <!-- ================= صفحه کاربر (فقط ورود با کلید - بدون نمایش کلید) ================= -->
+    <!-- ================= صفحه کاربر ================= -->
     <div id="userPage" style="display: none;">
         <div class="header-3d">
             <div class="logo-3d"><img src="https://img.icons8.com/fluency/48/000000/user.png" width="32"> LoTerModMenu</div>
@@ -190,7 +193,6 @@
                     </div>
                     <div id="userLoginError" style="color:#dc2626; margin-top: 20px; text-align:center;"></div>
                 </div>
-                <!-- بخش Import مخفی نیست اما فقط برای مواقعی که ادمین فایل بده -->
                 <div class="card-3d" style="max-width: 550px; margin: 20px auto 0; text-align:center;">
                     <p style="color:#475569;">اگر فایل کلید از ادمین دریافت کرده‌اید، آن را وارد کنید</p>
                     <label class="btn-outline-3d btn-3d" style="cursor:pointer; display:inline-flex; margin-top:10px;">
@@ -229,7 +231,7 @@
         </div>
     </div>
 
-    <!-- ================= صفحه ادمین (مدیریت کلیدها - با دکمه خروجی JSON) ================= -->
+    <!-- ================= صفحه ادمین ================= -->
     <div id="adminPage" style="display: none;">
         <div class="header-3d">
             <div class="logo-3d"><img src="https://img.icons8.com/fluency/48/000000/administrator.png" width="32"> مدیریت LoTerPanel</div>
@@ -287,14 +289,7 @@
 </div>
 
 <script>
-    // -------------------- پایگاه داده کلیدها --------------------
-    let keysDatabase = [];
-    const ADMIN_MASTER = "PoyaLoTer79";  // کلید مدیریت (فقط ادمین بداند)
-    let currentUserKeyObj = null;
-    let gameModeUser = false;
-    let timerInterval = null;
-
-    // تولید شناسه یکتا برای هر دستگاه
+    // -------------------- تولید شناسه یکتا برای دستگاه (Device ID) --------------------
     function generateDeviceId() {
         let nav = navigator.userAgent;
         let lang = navigator.language;
@@ -311,11 +306,15 @@
     const MY_DEVICE_ID = generateDeviceId();
     document.getElementById("displayDeviceId") && (document.getElementById("displayDeviceId").innerText = MY_DEVICE_ID);
 
+    // -------------------- پایگاه داده کلیدها (localStorage) --------------------
+    let keysDatabase = [];
+    const ADMIN_MASTER = "PoyaLoTer79";
+
     function loadKeys() {
         let stored = localStorage.getItem("PoyaLoTer_DB");
-        if(stored) keysDatabase = JSON.parse(stored);
-        else {
-            // کلید نمونه (فقط برای تست، حتماً در پنل ادمین پاک کنید)
+        if(stored) {
+            keysDatabase = JSON.parse(stored);
+        } else {
             keysDatabase = [
                 { key: "LoTerTest", expiryTimestamp: Date.now() + 30*86400000, maxDevices: 2, registeredDevices: [] }
             ];
@@ -324,33 +323,49 @@
     }
     function saveKeys() {
         localStorage.setItem("PoyaLoTer_DB", JSON.stringify(keysDatabase));
-        if(document.getElementById("adminDashboardArea") && document.getElementById("adminDashboardArea").style.display === "block") updateAdminStatsAndTables();
+        if(document.getElementById("adminDashboardArea") && document.getElementById("adminDashboardArea").style.display === "block") {
+            updateAdminStatsAndTables();
+        }
     }
 
+    // -------------------- ثبت دستگاه برای یک کلید (با زمان) --------------------
     function registerDeviceToKey(keyObj) {
-        let already = keyObj.registeredDevices.some(d => d.deviceId === MY_DEVICE_ID);
-        if(!already) {
-            if(keyObj.registeredDevices.length >= keyObj.maxDevices) return false;
-            keyObj.registeredDevices.push({ deviceId: MY_DEVICE_ID, registeredAt: new Date().toISOString() });
-            saveKeys();
+        // بررسی می‌کنیم آیا این دستگاه قبلاً ثبت شده است
+        let alreadyRegistered = keyObj.registeredDevices.some(d => d.deviceId === MY_DEVICE_ID);
+        if(alreadyRegistered) {
+            return true;
+        }
+        // اگر ظرفیت پر است، اجازه ثبت نده
+        if(keyObj.registeredDevices.length >= keyObj.maxDevices) {
+            return false;
+        }
+        // ثبت دستگاه جدید با زمان فعلی
+        keyObj.registeredDevices.push({
+            deviceId: MY_DEVICE_ID,
+            registeredAt: new Date().toISOString()
+        });
+        saveKeys();  // ذخیره فوری
+        return true;
+    }
+
+    // -------------------- بررسی اعتبار کلید (تاریخ + ظرفیت دستگاه) --------------------
+    function isKeyValid(keyStr) {
+        let found = keysDatabase.find(k => k.key === keyStr);
+        if(!found) return false;
+        if(found.expiryTimestamp <= Date.now()) return false;
+        let already = found.registeredDevices.some(d => d.deviceId === MY_DEVICE_ID);
+        if(!already && found.registeredDevices.length >= found.maxDevices) {
+            return false;
         }
         return true;
     }
 
-    function isKeyValid(keyStr) {
-        let found = keysDatabase.find(k => k.key === keyStr);
-        if(!found || found.expiryTimestamp <= Date.now()) return false;
-        let already = found.registeredDevices.some(d => d.deviceId === MY_DEVICE_ID);
-        if(!already && found.registeredDevices.length >= found.maxDevices) return false;
-        return true;
-    }
-
-    // اضافه کردن کلید جدید از فایل JSON (برای کاربر)
+    // -------------------- افزودن کلید از فایل JSON (برای کاربر) --------------------
     function addKeyToDatabase(keyObj) {
         let existing = keysDatabase.find(k => k.key === keyObj.key);
         if(existing) {
             if(existing.expiryTimestamp < keyObj.expiryTimestamp) existing.expiryTimestamp = keyObj.expiryTimestamp;
-            if(existing.maxDevices !== keyObj.maxDevices) existing.maxDevices = keyObj.maxDevices;
+            if(existing.maxDevices < keyObj.maxDevices) existing.maxDevices = keyObj.maxDevices;
             for(let dev of keyObj.registeredDevices) {
                 if(!existing.registeredDevices.some(d=>d.deviceId===dev.deviceId)) {
                     existing.registeredDevices.push(dev);
@@ -375,11 +390,18 @@
                 } else {
                     showToast("فرمت فایل نامعتبر است", true);
                 }
-            } catch(ex) { showToast("خطا در خواندن فایل", true); }
+            } catch(ex) {
+                showToast("خطا در خواندن فایل", true);
+            }
         };
         reader.readAsText(file);
         document.getElementById("userImportFile").value = "";
     };
+
+    // -------------------- لاگین کاربر --------------------
+    let currentUserKeyObj = null;
+    let gameModeUser = false;
+    let timerInterval = null;
 
     function attemptUserLogin(keyStr) {
         let keyObj = keysDatabase.find(k => k.key === keyStr);
@@ -391,7 +413,8 @@
             document.getElementById("userLoginError").innerText = "❌ این کلید منقضی شده است.";
             return false;
         }
-        if(!registerDeviceToKey(keyObj)) {
+        let registered = registerDeviceToKey(keyObj);
+        if(!registered) {
             document.getElementById("userLoginError").innerText = `❌ حداکثر تعداد دستگاه (${keyObj.maxDevices}) پر شده است.`;
             return false;
         }
@@ -406,7 +429,9 @@
     function startUserTimer() {
         if(timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
-            if(document.getElementById("userInfoPanel").style.display === "block" && currentUserKeyObj) updateUserInfoPanel();
+            if(document.getElementById("userInfoPanel").style.display === "block" && currentUserKeyObj) {
+                updateUserInfoPanel();
+            }
         }, 1000);
     }
     function updateUserInfoPanel() {
@@ -423,6 +448,7 @@
         document.getElementById("infoDeviceId").innerText = MY_DEVICE_ID;
         document.getElementById("infoKeyName").innerText = currentUserKeyObj.key;
     }
+
     function buildUserFeatures() {
         const categories = {
             memori: ["بدون لگ", "افزایش رم", "بهینه‌سازی حافظه", "پاک‌کن کش"],
@@ -450,11 +476,18 @@
         }
         document.querySelectorAll(".user-feat-switch").forEach(sw => {
             sw.addEventListener("change", (e) => {
-                if(!gameModeUser && e.target.checked) { showToast("لطفاً حالت بازی را روشن کنید", true); e.target.checked=false; return; }
+                if(!gameModeUser && e.target.checked) {
+                    showToast("لطفاً حالت بازی را روشن کنید", true);
+                    e.target.checked = false;
+                    return;
+                }
                 showToast(e.target.checked ? `✅ ${e.target.dataset.feat} فعال شد` : `🔴 ${e.target.dataset.feat} غیرفعال شد`);
             });
         });
-        document.getElementById("gameModeUser").onchange = (e) => { gameModeUser = e.target.checked; showToast(gameModeUser?"حالت بازی روشن":"حالت بازی خاموش"); };
+        document.getElementById("gameModeUser").onchange = (e) => {
+            gameModeUser = e.target.checked;
+            showToast(gameModeUser ? "حالت بازی روشن" : "حالت بازی خاموش");
+        };
         document.getElementById("openUserMenuBtn").onclick = () => document.getElementById("userCategoryMenu").style.display = "block";
         document.querySelectorAll("[data-cat]").forEach(el => {
             el.onclick = () => {
@@ -463,9 +496,16 @@
                 document.getElementById(`userPanel_${cat}`).style.display = "block";
             };
         });
-        document.getElementById("userInfoBtn").onclick = () => { document.getElementById("userInfoPanel").style.display = "block"; updateUserInfoPanel(); };
+        document.getElementById("userInfoBtn").onclick = () => {
+            document.getElementById("userInfoPanel").style.display = "block";
+            updateUserInfoPanel();
+        };
         document.getElementById("closeUserInfo").onclick = () => document.getElementById("userInfoPanel").style.display = "none";
-        document.getElementById("userLogoutBtn").onclick = () => { currentUserKeyObj = null; resetUserUI(); clearInterval(timerInterval); };
+        document.getElementById("userLogoutBtn").onclick = () => {
+            currentUserKeyObj = null;
+            resetUserUI();
+            clearInterval(timerInterval);
+        };
     }
     function resetUserUI() {
         document.getElementById("userLoginArea").style.display = "block";
@@ -486,12 +526,13 @@
             document.getElementById("adminLoginError").innerText = "کلید مدیریت اشتباه است";
         }
     }
+
     function updateAdminStatsAndTables() {
         let total = keysDatabase.length;
         let now = Date.now();
-        let active = keysDatabase.filter(k=>k.expiryTimestamp > now).length;
+        let active = keysDatabase.filter(k => k.expiryTimestamp > now).length;
         let expired = total - active;
-        let totalDevices = keysDatabase.reduce((a,k)=>a+k.registeredDevices.length,0);
+        let totalDevices = keysDatabase.reduce((acc, k) => acc + k.registeredDevices.length, 0);
         document.getElementById("adminStats").innerHTML = `
             <div class="stat-3d"><div class="stat-number">${total}</div><div>کل کلیدها</div></div>
             <div class="stat-3d"><div class="stat-number">${active}</div><div>فعال</div></div>
@@ -499,9 +540,14 @@
             <div class="stat-3d"><div class="stat-number">${totalDevices}</div><div>دستگاه‌های ثبت شده</div></div>
         `;
         let recent = [...keysDatabase].sort((a,b)=>b.expiryTimestamp - a.expiryTimestamp).slice(0,5);
-        document.getElementById("recentKeysList").innerHTML = recent.map(k=>`<div style="border-bottom:1px solid #e9ecef; padding:10px;"><strong>${k.key}</strong> - انقضا: ${new Date(k.expiryTimestamp).toLocaleString()} - دستگاه‌ها: ${k.registeredDevices.length}/${k.maxDevices}</div>`).join('');
+        document.getElementById("recentKeysList").innerHTML = recent.map(k => `
+            <div style="border-bottom:1px solid #e9ecef; padding:10px;">
+                <strong>${k.key}</strong> - انقضا: ${new Date(k.expiryTimestamp).toLocaleString()} - دستگاه‌ها: ${k.registeredDevices.length}/${k.maxDevices}
+            </div>
+        `).join('');
         renderAdminTable();
     }
+
     function renderAdminTable() {
         let search = document.getElementById("searchKeyAdmin")?.value.toLowerCase() || "";
         let filter = document.getElementById("filterStatusAdmin")?.value || "all";
@@ -512,35 +558,54 @@
             if(filter === "expired" && activeNow) return false;
             return true;
         });
-        let html = `<table class="table-3d"><thead><tr><th>کلید</th><th>تاریخ انقضا</th><th>حداکثر دستگاه</th><th>دستگاه‌های ثبت شده</th><th>عملیات</th></tr></thead><tbody>`;
+        let html = `<table class="table-3d"><thead> <th>کلید</th><th>تاریخ انقضا</th><th>حداکثر دستگاه</th><th>دستگاه‌های ثبت شده (با زمان)</th><th>عملیات</th> </thead><tbody>`;
         filtered.forEach(k => {
-            let deviceListHtml = k.registeredDevices.map(d => `<div class="device-chip">${d.deviceId}<br><span class="device-time">${new Date(d.registeredAt).toLocaleString()}</span></div>`).join('');
-            if(!deviceListHtml) deviceListHtml = "<span style='color:#aaa;'>هنوز دستگاهی ثبت نشده</span>";
-            html += `<tr>
-                        <td><strong>${k.key}</strong></td>
-                        <td>${new Date(k.expiryTimestamp).toLocaleString()}</td>
-                        <td><input type="number" id="max_${k.key}" value="${k.maxDevices}" min="1" max="10" style="width:70px;"></td>
-                        <td>${deviceListHtml}</td>
-                        <td>
-                            <button onclick="updateMaxDevices('${k.key}')" class="btn-3d" style="padding:6px 12px;">💾 ذخیره</button>
-                            <button onclick="downloadSingleKey('${k.key}')" class="btn-outline-3d btn-3d" style="padding:6px 12px;">📥 خروجی JSON</button>
-                            <button onclick="deleteKeyAdmin('${k.key}')" style="background:#dc2626; border:none; padding:6px 12px; border-radius:40px; color:white;">🗑️ حذف</button>
-                        </td>
-                     </tr>`;
+            let deviceListHtml = "";
+            if(k.registeredDevices.length === 0) {
+                deviceListHtml = "<span style='color:#aaa;'>هنوز دستگاهی ثبت نشده</span>";
+            } else {
+                deviceListHtml = k.registeredDevices.map(d => `
+                    <div class="device-chip">
+                        ${d.deviceId}<br>
+                        <span class="device-time">${new Date(d.registeredAt).toLocaleString()}</span>
+                    </div>
+                `).join('');
+            }
+            html += `
+                <tr>
+                    <td><strong>${k.key}</strong></td>
+                    <td>${new Date(k.expiryTimestamp).toLocaleString()}</td>
+                    <td><input type="number" id="max_${k.key}" value="${k.maxDevices}" min="1" max="10" style="width:70px;"></td>
+                    <td>${deviceListHtml}</td>
+                    <td>
+                        <button onclick="updateMaxDevices('${k.key}')" class="btn-3d" style="padding:6px 12px;">💾 ذخیره</button>
+                        <button onclick="downloadSingleKey('${k.key}')" class="btn-outline-3d btn-3d" style="padding:6px 12px;">📥 خروجی JSON</button>
+                        <button onclick="deleteKeyAdmin('${k.key}')" style="background:#dc2626; border:none; padding:6px 12px; border-radius:40px; color:white;">🗑️ حذف</button>
+                    </td>
+                </tr>
+            `;
         });
-        html += `</tbody></table>`;
+        html += `</tbody>}</div>`;
         document.getElementById("keysTableContainer").innerHTML = html;
     }
+
     window.updateMaxDevices = (key) => {
         let newMax = parseInt(document.getElementById(`max_${key}`).value);
-        let idx = keysDatabase.findIndex(k=>k.key===key);
-        if(idx!==-1) { keysDatabase[idx].maxDevices = newMax; saveKeys(); showToast(`حداکثر دستگاه به ${newMax} تغییر یافت`); }
+        let idx = keysDatabase.findIndex(k => k.key === key);
+        if(idx !== -1) {
+            keysDatabase[idx].maxDevices = newMax;
+            saveKeys();
+            showToast(`حداکثر دستگاه به ${newMax} تغییر یافت`);
+        }
     };
     window.deleteKeyAdmin = (key) => {
-        if(confirm(`آیا کلید "${key}" برای همیشه حذف شود؟`)) { keysDatabase = keysDatabase.filter(k=>k.key!==key); saveKeys(); }
+        if(confirm(`آیا کلید "${key}" برای همیشه حذف شود؟`)) {
+            keysDatabase = keysDatabase.filter(k => k.key !== key);
+            saveKeys();
+        }
     };
     window.downloadSingleKey = (key) => {
-        let keyObj = keysDatabase.find(k=>k.key===key);
+        let keyObj = keysDatabase.find(k => k.key === key);
         if(keyObj) {
             let data = JSON.stringify([keyObj], null, 2);
             let blob = new Blob([data], {type:"application/json"});
@@ -553,14 +618,25 @@
     };
     function generateNewKey(custom, expiryVal, type, maxDev) {
         let finalKey = custom.trim() || ("LoTer"+Math.random().toString(36).substring(2,10).toUpperCase());
-        if(keysDatabase.find(k=>k.key===finalKey)) { showToast("این کلید قبلاً وجود دارد", true); return false; }
+        if(keysDatabase.find(k=>k.key===finalKey)) {
+            showToast("این کلید قبلاً وجود دارد", true);
+            return false;
+        }
         let add = 0;
-        if(type==="hours") add = expiryVal * 3600000;
-        else if(type==="days") add = expiryVal * 86400000;
+        if(type === "hours") add = expiryVal * 3600000;
+        else if(type === "days") add = expiryVal * 86400000;
         else add = expiryVal * 30 * 86400000;
-        keysDatabase.push({ key: finalKey, expiryTimestamp: Date.now()+add, maxDevices: Math.min(10,maxDev), registeredDevices: [] });
+        keysDatabase.push({
+            key: finalKey,
+            expiryTimestamp: Date.now() + add,
+            maxDevices: Math.min(10, maxDev),
+            registeredDevices: []
+        });
         saveKeys();
-        document.getElementById("genResultMsg").innerHTML = `✅ کلید <strong>${finalKey}</strong> با ${expiryVal} ${type==="hours"?"ساعت":(type==="days"?"روز":"ماه")} اعتبار و حداکثر ${maxDev} دستگاه ساخته شد.<br><button onclick="downloadSingleKey('${finalKey}')" class="btn-outline-3d btn-3d" style="margin-top:12px;">📥 دریافت فایل این کلید</button>`;
+        document.getElementById("genResultMsg").innerHTML = `
+            ✅ کلید <strong>${finalKey}</strong> با ${expiryVal} ${type==="hours"?"ساعت":(type==="days"?"روز":"ماه")} اعتبار و حداکثر ${maxDev} دستگاه ساخته شد.<br>
+            <button onclick="downloadSingleKey('${finalKey}')" class="btn-outline-3d btn-3d" style="margin-top:12px;">📥 دریافت فایل این کلید</button>
+        `;
         showToast(`کلید ${finalKey} ساخته شد`);
         return true;
     }
@@ -572,7 +648,13 @@
         a.download = `all_keys_backup.json`;
         a.click();
     }
-    function resetAllKeys() { if(confirm("همه کلیدها برای همیشه حذف شوند؟")) { keysDatabase = []; saveKeys(); showToast("همه کلیدها حذف شدند"); } }
+    function resetAllKeys() {
+        if(confirm("همه کلیدها برای همیشه حذف شوند؟")) {
+            keysDatabase = [];
+            saveKeys();
+            showToast("همه کلیدها حذف شدند");
+        }
+    }
     function showToast(msg, isErr=false) {
         let toast = document.createElement("div");
         toast.innerText = msg;
@@ -587,15 +669,17 @@
         toast.style.zIndex = "9999";
         toast.style.fontWeight = "500";
         document.body.appendChild(toast);
-        setTimeout(()=>toast.remove(), 3000);
+        setTimeout(() => toast.remove(), 3000);
     }
-    // ---------- Navigation ----------
+
+    // -------------------- هدایت صفحات --------------------
     function showMode(mode) {
         document.getElementById("modeSelectPage").style.display = "none";
         if(mode === "user") {
             document.getElementById("userPage").style.display = "block";
             document.getElementById("adminPage").style.display = "none";
-            resetUserUI(); buildUserFeatures();
+            resetUserUI();
+            buildUserFeatures();
         } else {
             document.getElementById("adminPage").style.display = "block";
             document.getElementById("userPage").style.display = "none";
@@ -609,6 +693,7 @@
         document.getElementById("adminPage").style.display = "none";
         if(timerInterval) clearInterval(timerInterval);
     }
+
     // رویدادها
     document.querySelectorAll("[data-mode]").forEach(el => el.onclick = () => showMode(el.getAttribute("data-mode")));
     document.getElementById("userHomeBtn").onclick = goHome;
@@ -617,10 +702,10 @@
     document.getElementById("adminLoginBtn").onclick = () => adminLogin(document.getElementById("adminMasterInput").value);
     document.querySelectorAll(".tab-3d").forEach(btn => {
         btn.onclick = () => {
-            document.querySelectorAll(".tab-3d").forEach(b=>b.classList.remove("active"));
+            document.querySelectorAll(".tab-3d").forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             let tabId = btn.getAttribute("data-tab");
-            document.querySelectorAll("#dashboardTab, #generateTab, #manageTab, #settingsTab").forEach(tc=>tc.style.display="none");
+            document.querySelectorAll("#dashboardTab, #generateTab, #manageTab, #settingsTab").forEach(tc => tc.style.display = "none");
             document.getElementById(tabId+"Tab").style.display = "block";
             if(tabId === "manage") renderAdminTable();
             if(tabId === "dashboard") updateAdminStatsAndTables();
